@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Canvas_Part_2</title>
+    <!-- Adds a border around the canvas-->
+    <style>
+        #canvas {
+            border: 3px solid;
+        }
+    </style>
+</head>
+<body>
+<!--Creates a canvas element-->
+<canvas id="canvas" height="500" width="500"></canvas>
+<script>
+    //    Captures the canvas element and its context in variables
+    var canvas = document.getElementById("canvas");
+    var context = canvas.getContext("2d");
+    //    Creates one circle
+    context.beginPath();
+    context.arc(250, 100, 25, 0, 2 * Math.PI);
+    context.stroke();
+    //    Creates another smaller circle
+    context.beginPath();
+    context.arc(250, 125, 12, 0, 2 * Math.PI);
+    context.stroke();
+    //    Creates another even smaller circle
+    context.beginPath();
+    context.arc(250, 140, 5, 0, 2 * Math.PI);
+    context.stroke();
+    //    Creates a shape with multiple lines
+    context.moveTo(120, 100);
+    context.lineTo(380, 450);
+    context.lineTo(380, 100);
+    context.lineTo(120, 100);
+    context.lineTo(120, 450);
+    context.lineTo(380, 450);
+    context.stroke();
+</script>
+</body>
+</html>

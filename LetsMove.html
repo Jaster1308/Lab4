@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Drawing_Time</title>
+    <!--Adds a border to the canvas element-->
+    <style>
+        #canvas {
+            border: 5px solid;
+        }
+    </style>
+
+</head>
+<body>
+<!--Creates canvas element and centers it in the window-->
+<center><canvas id="canvas" height="300" width="500"></canvas></center>
+<script>
+    //    Captures the canvas element and its context in variables
+    var canvas = document.getElementById("canvas");
+    var context = canvas.getContext("2d");
+    //Adds 2 event listeners to the canvas element
+    document.getElementById("canvas").addEventListener("mousemove", movin_the_mouse);
+    document.getElementById("canvas").addEventListener("click", giveMeColor);
+    //    Sets a default color to start with
+    context.strokeStyle = 'blue';
+    function movin_the_mouse() {
+//        Captures current mouse position
+        var x = event.offsetX;
+        var y = event.offsetY;
+//Draws small circle at mouse location
+        context.beginPath();
+        context.arc(x-2.5, y-2.5, 5, 0, 2 * Math.PI);
+        context.stroke();
+    }
+    function giveMeColor() {
+//        Generates random rgb numbers
+        var r = Math.floor(Math.random() * 255);   //Pick a random number between 0 and 1
+        var g = Math.floor(Math.random() * 255);   //Multiply by 255 to get a number in the correct range
+        var b = Math.floor(Math.random() * 255);   //Then convert it to an int
+        //Colors can be created as "rgb(33, 52, 15)" where the numbers are R, G, B values.
+        //This is expected as a string.
+//        Runs conversion function and sets color to new one
+        var colorString = rgbToHex(r,g,b);
+        context.strokeStyle = colorString;
+    }
+    //    Function that converts rgb color scheme to hex code
+    function rgbToHex(r, g, b) {
+        return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+    }
+</script>
+
+
+</body>
+</html>

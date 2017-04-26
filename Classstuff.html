@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <style>
+        #canvas {
+            border: 3px darkred solid;
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="canvas" height="2000" width="3000"></canvas>
+<script>
+    var canvas = document.getElementById("canvas");
+    var context = canvas.getContext("2d");
+    context.fillStyle = 'blue';
+    context.fillRect(20, 20, 100, 100);
+    context.strokeRect(150, 20, 100, 100);
+    context.fillRect(500, 350, 320, 400);
+    context.moveTo(30, 120);
+    context.lineTo(300, 180);
+    context.lineWidth = '33';
+    context.stroke();
+    context.beginPath();
+    context.arc(150, 200, 50, 0, 2 * Math.PI);
+    context.stroke();
+    context.font = '30px Arial';
+    context.fillText('What do you want!!!', 100, 250);
+    var image = document.getElementById("raptor");
+    context.drawImage(image, 450, 450);
+    context.drawImage(image, 1000, 1000);
+</script>
+
+</body>
+</html>

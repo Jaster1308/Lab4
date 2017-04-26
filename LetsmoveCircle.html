@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>setInterval_Page</title>
+</head>
+<body>
+<!--Creates canvas element-->
+<canvas id="canvas" height="2000" width="3000"></canvas>
+<script>
+    //    Captures the canvas element and its context in variables
+    var canvas = document.getElementById("canvas");
+    var context = canvas.getContext("2d");
+    //Sets initial x and y coordinates in global variables
+    var x = 30;
+    var y = 30;
+    //Runs setInterval method
+    setInterval(moveCircle, 100);
+    function moveCircle() {
+//        Creates a circle, clears canvas,  and then creates
+//        a new circle skewed
+        context.beginPath();
+        context.arc(30, 30, 25, 0, 2 * Math.PI);
+        context.stroke();
+        context.clearRect(0, 0, 2000, 3000);
+        context.beginPath();
+        context.arc(x + 10, y + 10, 25, 0, 2 * Math.PI);
+        context.stroke();
+//        Increases global variables
+        x += 10;
+        y += 10;
+    }
+</script>
+
+</body>
+</html>

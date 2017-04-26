@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Google Maps Game</title>
+    <style>
+        /*Sets the size of the map*/
+        #map {
+            height: 400px;
+            width: 100%;
+            background-color: grey;
+        }
+        /*Sets appearance of starter button*/
+        #btnStart {
+            height: 40px;
+            width: 150px;
+            text-effect: emboss;
+            font-weight: bold;
+            font-size: larger;
+        }
+    </style>
+</head>
+<body>
+<h3>My Google Maps Demo</h3>
+<div id="map"></div>
+<script>
+    //        Creates 2d array of cities and coordinates
+    var arrMarkers = [[
+        [38.246735, -85.767436, "Louisville"],
+        [46.808521, -100.779420, "Bismarck"],
+        [36.170140, -115.179149, "Las Vegas"]
+    ],
+        [
+            [32.778796, -96.801408, "Dallas"],
+            [41.878398, -87.644291, "Chicago"],
+            [47.605504, -122.329045, "Seattle"]
+        ],
+        [
+            [25.765562, -80.197366, "Miami"],
+            [42.335115, -83.051166, "Detroit"],
+            [39.740774, -104.977362, "Denver"]
+        ]
+    ];
+    //        Creates array of questions and answers
+    var arrQuestions = [
+        ["Which of these markers indicates Louisville?", "Louisville"],
+        ["Which of these markers indicates Dallas?", "Dallas"],
+        ["Which of these markers indicates Miami?", "Miami"] ];
+    //        Creates variables to determine current question, how many questions
+    //        the user got correct, and an empty array to hold the markers.
+    var questionNum = 0;
+    var player_score = 0;
+    var allMarkers = [];
+    //        Function used to instantiate the google map and set some attributes.
+    function initMap() {
+        var usa = {lat: 39.930312, lng: -98.390926};
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 4,
+            center: usa,
+            mapTypeId: 'satellite',
+            disableDefaultUI: true
+        });
+//            Loops through both dimensions of the array and creates a new marker
+//            for each city in the whole array.
+        for (var x = 0; x < arrMarkers.length; x++) {
+            for (var i = 0; i < arrMarkers[x].length; i++) {
+                var marker = new google.maps.Marker({
+                    position: {lat: arrMarkers[x][i][0], lng: arrMarkers[x][i][1]},
+                    map: map,
+//                        Initially sets the marker's visibility to false and adds a
+//                        custom information attribute that contains its city name.
+                    visible: false,
+                    customInfo: arrMarkers[x][i][2]
+                });
+//                    Each marker is given the same event listener and added to an array.
+                marker.addListener('click', checkAnswer);
+                allMarkers.push(marker);
+            }
+        }
+    }
+</script>
+<!--Generates the map-->
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyADpIV1QKhmFLqGm_Bvver2BKbDM1EIpmg&callback=initMap"></script>
+
+<!--Introduction section that contains a button for continuing/starting.-->
+<div id="starter">
+    <br>
+    <p id="intro">Wanna play a game???</p>
+    <center><button type="button" id="btnStart">Click to Start!</button></center>
+</div>
+
+<!--Section to add the questions to for the user to see.-->
+<div id="questions"></div>
+
+<!--Section to add the result of the user's choice.-->
+<center><div id="response"></div></center>
+
+<script>
+    //        Captures the button and the paragraphs in variables.
+    var questionPara = document.getElementById("questions");
+    var answerPara = document.getElementById("response");
+    var mybutton = document.getElementById("btnStart");
+    mybutton.addEventListener('click', startGame);
+    var introPara = document.getElementById("intro");
+    //        Function for starting and progressing the game.
+    function startGame() {
+//            Hides the button and fills in the text sections.
+        mybutton.style.visibility = 'hidden';
+        introPara.innerHTML = "Question #" + (questionNum + 1);
+        questionPara.innerHTML = arrQuestions[questionNum][0];
+        answerPara.innerHTML = "";
+//            Unhides the associated markers for the current question.
+        doubleLooping(1);
+    }
+    //        Function for checking if the user's answer was correct or not.
+    function checkAnswer() {
+//            Checks if the answer matches what is in the array. By design the
+//            first item in each sub-array is the correct answer.
+        if (this.customInfo == arrMarkers[questionNum][0][2]) {
+//                Displays response and increases score variable.
+            showResponse(1);
+            player_score++;
+        }
+        else {
+            showResponse(2);
+        }
+//            Rehides all markers.
+        doubleLooping(2);
+//            Adds a delay before executing the following code.
+        setTimeout(function() {
+//                Increases question variable and checks if there are more
+//                questions before displaying the button.
+            questionNum++;
+            if(questionNum < arrQuestions.length) {
+                mybutton.style.visibility = 'visible';
+            }
+            else {
+//                    After the final question, the text fields are cleared and the
+//                    final score is displayed.
+                introPara.innerHTML = "";
+                questionPara.innerHTML = "";
+                answerPara.style.color = "blue";
+                answerPara.innerHTML = "Your score is " + player_score + "!";
+            }
+        },2000);
+    }
+    //        Function for displaying the response to the user's choice.
+    function showResponse(option) {
+        if (option == 1) {
+            answerPara.innerHTML = "Correct!";
+            answerPara.style.color = "green";
+        }
+        else {
+            answerPara.innerHTML = "Wrong!";
+            answerPara.style.color = "red";
+        }
+    }
+    //        Function for double looping through arrays to set visibility of markers.
+    function doubleLooping(option) {
+//            Loops through array of marker objects.
+        for (var y = 0; y < allMarkers.length; y++) {
+//                Loops through array of marker info.
+            for (var x = 0; x < arrMarkers[questionNum].length; x++) {
+                if (allMarkers[y].customInfo == arrMarkers[questionNum][x][2]) {
+                    if (option == 1) {
+                        allMarkers[y].setVisible(true);
+                    }
+                    else if (option == 2) {
+                        allMarkers[y].setVisible(false);
+                    }
+                }
+            }
+        }
+    }
+</script>
+</body>
+</html>
+
+<!--Help From Mark Fox and Stephanie-->
